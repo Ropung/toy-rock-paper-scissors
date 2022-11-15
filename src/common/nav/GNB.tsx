@@ -3,22 +3,23 @@ import Path from "../../utils/routes/Path";
 
 const GNB = () => {
   const { HOME, RPS } = Path;
+
   return (
-    <nav className="w-screen flex flex-row h-fit bg-main">
-      <header className="w-full h-fit flex justify-between items-center px-6 py-4">
-        <div className="text-5xl text-sub">Ropung</div>
-        <ul className="flex flex-row gap-6 items-center text-sub text-xl">
-          <li className="cursor-pointer">
-            <Link to={RPS}>메뉴1</Link>
-          </li>
-          <li className="cursor-pointer">
-            <Link to={HOME}>메뉴2</Link>
-          </li>
-          <li className="cursor-pointer">
-            <Link to={HOME}>메뉴3</Link>
-          </li>
-        </ul>
+    <nav className="w-screen flex flex-row h-fit bg-light text-main select-none px-8 pt-16 pb-8 border-b shadow-md">
+      <header className="w-full h-fit flex justify-between items-center text-5xl font-bold tracking-wider">
+        Ropung
       </header>
+      <ul className="flex flex-row items-end text-2xl whitespace-nowrap gap-10">
+        <li>
+          <Link to={HOME}>홈</Link>
+        </li>
+        <li>
+          <Link to={RPS}>가위바위보</Link>
+        </li>
+        <li>
+          <Link to={HOME}>UI</Link>
+        </li>
+      </ul>
     </nav>
   );
 };

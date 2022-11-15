@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 모바일 화면에서 탭 했을 때 파랗게 되는 현상 개선 */
+#root *:focus {
+  -webkit-tap-highlight-color: transparent;
+}

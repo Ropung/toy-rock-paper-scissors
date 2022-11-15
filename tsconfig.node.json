@@ -2,16 +2,6 @@
   "compilerOptions": {
     "target": "ESNext",
     "types": ["node"],
-    "paths": {
-      "@/*": ["./src/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@components/*": ["./src/components/*"],
-      "@data/*": ["./src/data/*"],
-      "@models/*": ["./src/models/*"],
-      "@store/*": ["./src/store/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@utils/*": ["./src/utils/*"]
-    },
     "composite": true,
     "module": "esnext",
     "moduleResolution": "node"

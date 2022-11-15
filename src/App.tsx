@@ -1,8 +1,7 @@
 import { useLayoutEffect, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Path from "./utils/routes/Path";
+// 컴포넌트
 import HomePage from "./components/home/HomePage";
 import RockPaperScissors from "./components/rps/RockPaperScissors";
 import GNB from "./common/nav/GNB";

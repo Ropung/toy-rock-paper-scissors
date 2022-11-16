@@ -9,7 +9,7 @@ import Scissors from "@assets/img/rps/scissors.png";
 import Paper from "@assets/img/rps/paper.png";
 
 import RPSGamePlayer from "@models/rps/RPSGamePlayer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RockScissorsPaper from "@models/rps/RockScissorsPaper";
 
 // l, r in ["묵", "찌", "빠"]
@@ -29,9 +29,6 @@ const RockPaperScissors = () => {
     PAPER: Paper,
   };
 
-  // FIXME 배열로 쓰기보다는 rps 속성에 따라서 이미지를 택하도록
-  const rockScissorsPaperImg = [Rock, Scissors, Paper];
-
   // 함수로 만듦으로써 매번 생성하기 떄문에 다른 참조값을 가지게 됨.
   // rps, match 등 참조되는 자료(이 경우 배열)가 없었으면
   // { history: { ...initialHistoryState } } 등으로 초기화 가능
@@ -43,13 +40,14 @@ const RockPaperScissors = () => {
     match: [],
   });
 
-  const player: RPSGamePlayer = {
+  const [player, setPlayer] = useState<RPSGamePlayer>({
     name: "나",
     rps: null,
     avatarUri: "avatar://ryan.png",
     history: getInitialHistoryState(),
-  };
-  const counters: RPSGamePlayer[] = [
+  });
+
+  const [counters, setCounters] = useState<RPSGamePlayer[]>([
     {
       name: "프로도",
       rps: null,
@@ -68,23 +66,49 @@ const RockPaperScissors = () => {
       avatarUri: "avatar://apeach.png",
       history: getInitialHistoryState(),
     },
-  ];
+  ]);
 
-  // const [rockScissorsPaper, setRockScissorsPaper] =
-  //   useState<>("ROCK");
+  // 각 상황(게임 시작, 게임 종료, 냈을 때, 시간이 끝날 때 등)에 따라
+  // 기존 Interval을 Clear해 주기 위해서.
+  const [randomRPSAnimateInterval, setRandomRPSAnimateInterval] =
+    useState<NodeJS.Timer | null>(null);
 
-  const showImg = () => {
-    // 기획상 승부에서 상대방이 찌가 많이나올수록 게임이 흥미로워짐
-    const chagne = Math.round(Math.random() * 2);
+  // 기획상 승부에서 상대방이 찌가 많이나올수록 게임이 흥미로워짐
+  // const random = Math.round(Math.random() * 2);
+  useEffect(() => {
     // 단순 바꾸기
-    const imgNum = Math.floor(Math.random() * 2 + 1);
+    const rpsSet: RockScissorsPaper[] = ["ROCK", "SCISSORS", "PAPER"];
+    // == null로 하면 undefined를 포함하여 비교해 줌.(undefined 또는 null일 때 true)
+    const random = Math.floor(Math.random() * 3); // 0, 1 , 2
+    const rps = rpsSet[random];
 
-    const change = rockScissorsPaperImg[imgNum];
-    setInterval(rockScissorsPaperImg[imgNum], 200);
-  };
+    const newCounters = [...counters];
+    newCounters[0].rps = rps;
+    setCounters(newCounters);
+
+    const interval = setInterval(() => {
+      if (counters[0].rps == null) {
+        return;
+      }
+
+      const random = Math.floor(Math.random() * 2 + 1); // 1 , 2
+      const currentIndex = rpsSet.indexOf(counters[0].rps);
+      const newIndex = (currentIndex + random) % 3;
+
+      const rps = rpsSet[newIndex];
+
+      const newCounters = [...counters];
+      newCounters[0].rps = rps;
+      setCounters(newCounters);
+    }, 500);
+
+    setRandomRPSAnimateInterval(interval);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <ul className="fixed right-0 left-0 bottom-0 items-end px-8 flex justify-between py-4 bg-main-contra">
+    <ul className="fixed right-0 left-0 bottom-0 items-end px-8 grid grid-cols-2 sm:grid-cols-4 py-4 gap-8 justify-items-center bg-main-contra">
       {/* 나 */}
       <li className="w-[20vw] h-[12vw] flex flex-row justify-between gap-4 border-main border-2 rounded-md p-2 px-6 bg-main text-main-contra">
         <div className="w-1/2 flex flex-col justify-between">
@@ -110,7 +134,7 @@ const RockPaperScissors = () => {
 
       {/* counters */}
       {counters.map((counter) => (
-        <li className="w-[20vw] h-[12vw] flex flex-row justify-between gap-4 border-main border-2 rounded-md p-2 px-6 bg-main text-main-contra">
+        <li className="w-[20vw] h-[12vw] flex flex-row justify-between gap-4 border-main border-2 rounded-md py-4 px-6 bg-main text-main-contra">
           <div className="w-1/2 flex flex-col justify-between">
             <img
               className="w-full flex justify-center items-center"

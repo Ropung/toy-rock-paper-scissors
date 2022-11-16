@@ -4,7 +4,7 @@ import Path from "./utils/routes/Path";
 // 컴포넌트
 import HomePage from "./components/home/HomePage";
 import RockPaperScissors from "./components/rps/RockPaperScissors";
-import GNB from "./common/nav/GNB";
+import GNB from "./components/common/nav/GNB";
 
 function App() {
   const location = useLocation();

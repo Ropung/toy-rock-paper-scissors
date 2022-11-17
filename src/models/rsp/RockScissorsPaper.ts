@@ -1,3 +1,3 @@
-type RockScissorsPaper = "ROCK" | "SCISSORS" | "PAPER" | "NONE";
+type RockScissorsPaper = "ROCK" | "SCISSORS" | "PAPER";
 
 export default RockScissorsPaper;

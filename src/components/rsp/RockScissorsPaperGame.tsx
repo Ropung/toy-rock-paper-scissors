@@ -42,6 +42,7 @@ const RockScissorsPaperGame = () => {
   });
 
   const [player, setPlayer] = useState<RSPGamePlayer>({
+    userid: 0,
     name: "나",
     rsp: null,
     avatarUri: "avatar://ryan.png",
@@ -50,18 +51,21 @@ const RockScissorsPaperGame = () => {
 
   const [counters, setCounters] = useState<RSPGamePlayer[]>([
     {
+      userid: 1,
       name: "프로도",
       rsp: null,
       avatarUri: "avatar://prodo.png",
       history: getInitialHistoryState(),
     },
     {
+      userid: 2,
       name: "무지",
       rsp: null,
       avatarUri: "avatar://muzi.png",
       history: getInitialHistoryState(),
     },
     {
+      userid: 3,
       name: "어피치",
       rsp: null,
       avatarUri: "avatar://apeach.png",
@@ -191,7 +195,10 @@ const RockScissorsPaperGame = () => {
 
         {/* counters */}
         {counters.map((counter) => (
-          <li className="min-h-fit flex flex-col justify-between border-main border-2 rounded-md py-4 px-6 bg-main text-main-contra">
+          <li
+            key={counter.userid}
+            className="min-h-fit flex flex-col justify-between border-main border-2 rounded-md py-4 px-6 bg-main text-main-contra"
+          >
             <div className="w-full flex justify-between gap-2">
               <img
                 className="w-1/2 flex justify-center"

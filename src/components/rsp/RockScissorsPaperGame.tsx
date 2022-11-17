@@ -29,7 +29,6 @@ const RockScissorsPaperGame = () => {
     ROCK: Rock,
     SCISSORS: Scissors,
     PAPER: Paper,
-    NONE: RandomRSP,
   };
 
   // 함수로 만듦으로써 매번 생성하기 떄문에 다른 참조값을 가지게 됨.
@@ -79,7 +78,7 @@ const RockScissorsPaperGame = () => {
   const [isSelectOpen, setSelectOpen] = useState<boolean>(false);
 
   // 플레이어 가위바위보 모달창 선택 상태관리
-  const [rSPSelect, setRSPSelect] = useState<RockScissorsPaper>("ROCK");
+  const [rspSelect, setRspSelect] = useState<RockScissorsPaper | null>(null);
 
   // 각 상황(게임 시작, 게임 종료, 냈을 때, 시간이 끝날 때 등)에 따라
   // 기존 Interval을 Clear해 주기 위해서.
@@ -89,9 +88,9 @@ const RockScissorsPaperGame = () => {
   // 플레이어 RSP 상태관리
   useEffect(() => {
     const newPlayer = { ...player };
-    newPlayer.rsp = rSPSelect;
+    newPlayer.rsp = rspSelect;
     setPlayer(newPlayer);
-  }, [rSPSelect]);
+  }, [rspSelect]);
 
   useEffect(() => {
     // 초기값 넣어서 기본값넣기
@@ -116,31 +115,32 @@ const RockScissorsPaperGame = () => {
       }
 
       const randoms = [0, 0, 0];
-      randoms[0] = Math.floor(Math.random() * 2 + 1); // 1 , 2
-      randoms[1] = Math.floor(Math.random() * 2 + 1); // 1 , 2
-      randoms[2] = Math.floor(Math.random() * 2 + 1); // 1 , 2
+      //  1, 2
+      randoms[0] = Math.floor(Math.random() * 2 + 1);
+      randoms[1] = Math.floor(Math.random() * 2 + 1);
+      randoms[2] = Math.floor(Math.random() * 2 + 1);
 
       const currentIndexs: number[] = [0, 0, 0];
       currentIndexs[0] = rspSet.indexOf(counters[0].rsp);
       currentIndexs[1] = rspSet.indexOf(counters[1].rsp);
       currentIndexs[2] = rspSet.indexOf(counters[2].rsp);
 
-      const newInexs: number[] = [0, 0, 0];
-      newInexs[0] = (currentIndexs[0] + randoms[0]) % 3;
-      newInexs[1] = (currentIndexs[1] + randoms[1]) % 3;
-      newInexs[2] = (currentIndexs[2] + randoms[2]) % 3;
+      const newIndexs: number[] = [0, 0, 0];
+      newIndexs[0] = (currentIndexs[0] + randoms[0]) % 3;
+      newIndexs[1] = (currentIndexs[1] + randoms[1]) % 3;
+      newIndexs[2] = (currentIndexs[2] + randoms[2]) % 3;
 
       const rspMap: RockScissorsPaper[] = [];
-      rspMap[0] = rspSet[newInexs[0]];
-      rspMap[1] = rspSet[newInexs[1]];
-      rspMap[2] = rspSet[newInexs[2]];
+      rspMap[0] = rspSet[newIndexs[0]];
+      rspMap[1] = rspSet[newIndexs[1]];
+      rspMap[2] = rspSet[newIndexs[2]];
 
       const newCounters = [...counters];
       newCounters[0].rsp = rspMap[0];
       newCounters[1].rsp = rspMap[1];
       newCounters[2].rsp = rspMap[2];
       setCounters(newCounters);
-    }, 500);
+    }, 200);
 
     setRandomRSPAnimateInterval(interval);
 
@@ -153,8 +153,8 @@ const RockScissorsPaperGame = () => {
         {/* 게임진행을 위한 모달창 */}
         {isSelectOpen && (
           <SelectRSPModal
-            rSPSelect={rSPSelect}
-            setRSPSelect={setRSPSelect}
+            rspSelect={rspSelect}
+            setRspSelect={setRspSelect}
             isSelectOpen={isSelectOpen}
             setSelectOpen={setSelectOpen}
           />
@@ -176,7 +176,7 @@ const RockScissorsPaperGame = () => {
               className="flex justify-center items-center"
               onClick={() => {
                 setSelectOpen(!isSelectOpen);
-                setRSPSelect("NONE");
+                setRspSelect(null);
               }}
               src={rspIconMap[player.rsp as RockScissorsPaper] ?? RandomRSP}
               alt=""
@@ -210,7 +210,7 @@ const RockScissorsPaperGame = () => {
               />
               <img
                 className="w-1/2 flex justify-center items-center"
-                src={rspIconMap[counter.rsp as RockScissorsPaper] ?? Rock}
+                src={rspIconMap[counter.rsp as RockScissorsPaper] ?? RandomRSP}
                 alt=""
               />
             </div>

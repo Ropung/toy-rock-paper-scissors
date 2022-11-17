@@ -15,15 +15,15 @@ import RockScissorsPaper from "@models/rsp/RockScissorsPaper";
 
 export interface SelectRSPModalProps {
   // 가위바위보 상태
-  rSPSelect: RockScissorsPaper;
-  setRSPSelect: React.Dispatch<React.SetStateAction<RockScissorsPaper>>;
+  rspSelect: RockScissorsPaper | null;
+  setRspSelect: React.Dispatch<React.SetStateAction<RockScissorsPaper | null>>;
   // 상태창 닫기
   isSelectOpen: boolean;
   setSelectOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
-  const { rSPSelect, setRSPSelect, isSelectOpen, setSelectOpen } = props;
+  const { rspSelect, setRspSelect, isSelectOpen, setSelectOpen } = props;
 
   const [selectTimeOver, setSelectTimeOver] = useState<number>(5);
 
@@ -31,16 +31,14 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
     0: "ROCK",
     1: "SCISSORS",
     2: "PAPER",
-    3: "NONE",
   };
 
   useLayoutEffect(() => {
-    if (selectTimeOver <= 0 && rSPSelect === "NONE") {
+    if (selectTimeOver <= 0) {
       // 기획상 승부에서 찌가 많이나올수록 게임이 흥미로워짐
       const random = Math.round(Math.random() * 2);
       const randomRPS = randomRPSMap[random];
-      setRSPSelect(randomRPS);
-      console.log("useEffect randomRPS", randomRPS);
+      rspSelect == null && setRspSelect(randomRPS);
 
       setSelectOpen(false);
       return;
@@ -76,32 +74,32 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
         <div className="w-full flex gap-4 justify-center">
           <img
             className={`w-1/4 pb-1 ${
-              rSPSelect === "ROCK" ? "border-b-2 border-main-contra p-0" : ""
+              rspSelect === "ROCK" ? "border-b-2 border-main-contra p-0" : ""
             }`}
             onClick={() => {
-              setRSPSelect("ROCK");
+              setRspSelect("ROCK");
             }}
             src={Rock}
             alt=""
           />
           <img
             className={`w-1/4 pb-1 ${
-              rSPSelect === "SCISSORS"
+              rspSelect === "SCISSORS"
                 ? "border-b-2 border-main-contra p-0"
                 : ""
             }`}
             onClick={() => {
-              setRSPSelect("SCISSORS");
+              setRspSelect("SCISSORS");
             }}
             src={Scissors}
             alt=""
           />
           <img
             className={`w-1/4 pb-1 ${
-              rSPSelect === "PAPER" ? "border-b-2 border-main-contra p-0" : ""
+              rspSelect === "PAPER" ? "border-b-2 border-main-contra p-0" : ""
             }`}
             onClick={() => {
-              setRSPSelect("PAPER");
+              setRspSelect("PAPER");
             }}
             src={Paper}
             alt=""
@@ -110,14 +108,15 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
         <MainButton
           className="w-full border-2 border-black text-2xl font-bold !bg-main-contra text-main z-30"
           onClick={() => {
-            if (rSPSelect !== "NONE") {
+            if (rspSelect) {
+              setRspSelect(rspSelect);
               setSelectOpen(false);
-              return setRSPSelect(rSPSelect);
+              return;
             }
             // 기획상 승부에서 찌가 많이나올수록 게임이 흥미로워짐
             const random = Math.round(Math.random() * 2);
             const randomRPS = randomRPSMap[random];
-            setRSPSelect(randomRPS);
+            setRspSelect(randomRPS);
 
             setSelectOpen(false);
           }}

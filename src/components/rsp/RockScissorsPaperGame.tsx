@@ -6,6 +6,7 @@ import Apachi from "@assets/img/avatar/apeach.png";
 import Rock from "@assets/img/rsp/Rock.png";
 import Scissors from "@assets/img/rsp/scissors.png";
 import Paper from "@assets/img/rsp/paper.png";
+import RandomRSP from "@assets/img/rsp/random_rsp.png";
 
 import RSPGamePlayer from "@models/rsp/RSPGamePlayer";
 import { useEffect, useState } from "react";
@@ -28,6 +29,7 @@ const RockScissorsPaperGame = () => {
     ROCK: Rock,
     SCISSORS: Scissors,
     PAPER: Paper,
+    NONE: RandomRSP,
   };
 
   // 함수로 만듦으로써 매번 생성하기 떄문에 다른 참조값을 가지게 됨.
@@ -83,10 +85,6 @@ const RockScissorsPaperGame = () => {
   // 기존 Interval을 Clear해 주기 위해서.
   const [randomRSPAnimateInterval, setRandomRSPAnimateInterval] =
     useState<NodeJS.Timer | null>(null);
-
-  // FIXME
-  // 기획상 승부에서 상대방이 찌가 많이나올수록 게임이 흥미로워짐
-  // const random = Math.round(Math.random() * 2);
 
   // 플레이어 RSP 상태관리
   useEffect(() => {
@@ -178,8 +176,9 @@ const RockScissorsPaperGame = () => {
               className="flex justify-center items-center"
               onClick={() => {
                 setSelectOpen(!isSelectOpen);
+                setRSPSelect("NONE");
               }}
-              src={rspIconMap[player.rsp as RockScissorsPaper] ?? Rock}
+              src={rspIconMap[player.rsp as RockScissorsPaper] ?? RandomRSP}
               alt=""
             />
           </div>

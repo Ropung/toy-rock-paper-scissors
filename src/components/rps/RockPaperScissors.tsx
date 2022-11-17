@@ -79,26 +79,48 @@ const RockPaperScissors = () => {
     // 단순 바꾸기
     const rpsSet: RockScissorsPaper[] = ["ROCK", "SCISSORS", "PAPER"];
     // == null로 하면 undefined를 포함하여 비교해 줌.(undefined 또는 null일 때 true)
-    const random = Math.floor(Math.random() * 3); // 0, 1 , 2
+    const random = Math.floor(Math.random() * 3); // 0, 1 ,2
     const rps = rpsSet[random];
 
     const newCounters = [...counters];
     newCounters[0].rps = rps;
+    newCounters[1].rps = rps;
+    newCounters[2].rps = rps;
     setCounters(newCounters);
 
     const interval = setInterval(() => {
-      if (counters[0].rps == null) {
+      if (
+        counters[0].rps == null ||
+        counters[1].rps == null ||
+        counters[2].rps == null
+      ) {
         return;
       }
 
-      const random = Math.floor(Math.random() * 2 + 1); // 1 , 2
-      const currentIndex = rpsSet.indexOf(counters[0].rps);
-      const newIndex = (currentIndex + random) % 3;
+      const randoms = [0, 0, 0];
+      randoms[0] = Math.floor(Math.random() * 2 + 1); // 1 , 2
+      randoms[1] = Math.floor(Math.random() * 2 + 1); // 1 , 2
+      randoms[2] = Math.floor(Math.random() * 2 + 1); // 1 , 2
 
-      const rps = rpsSet[newIndex];
+      const currentIndexs: number[] = [0, 0, 0];
+      currentIndexs[0] = rpsSet.indexOf(counters[0].rps);
+      currentIndexs[1] = rpsSet.indexOf(counters[1].rps);
+      currentIndexs[2] = rpsSet.indexOf(counters[2].rps);
+
+      const newInexs: number[] = [0, 0, 0];
+      newInexs[0] = (currentIndexs[0] + randoms[0]) % 3;
+      newInexs[1] = (currentIndexs[1] + randoms[1]) % 3;
+      newInexs[2] = (currentIndexs[2] + randoms[2]) % 3;
+
+      const rpsMap: RockScissorsPaper[] = [];
+      rpsMap[0] = rpsSet[newInexs[0]];
+      rpsMap[1] = rpsSet[newInexs[1]];
+      rpsMap[2] = rpsSet[newInexs[2]];
 
       const newCounters = [...counters];
-      newCounters[0].rps = rps;
+      newCounters[0].rps = rpsMap[0];
+      newCounters[1].rps = rpsMap[1];
+      newCounters[2].rps = rpsMap[2];
       setCounters(newCounters);
     }, 500);
 

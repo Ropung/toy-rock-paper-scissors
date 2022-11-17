@@ -65,7 +65,7 @@ module.exports = {
       xl: "1280px",
       "2xl": "1536px",
       // smaller
-      jm: { max: "424px" },
+      jm: { max: "500px" },
       xs: { max: "299px" },
     },
   },

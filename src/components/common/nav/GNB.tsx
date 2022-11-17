@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Path from "../../../utils/routes/Path";
 
 const GNB = () => {
-  const { HOME, RPS } = Path;
+  const { HOME, RSP } = Path;
 
   return (
     <nav className="fixed top-0 right-0 left-0 w-screen flex flex-row h-fit bg-light text-main select-none px-8 pt-16 pb-8 border-b shadow-md">
@@ -14,7 +14,7 @@ const GNB = () => {
           <Link to={HOME}>홈</Link>
         </li>
         <li>
-          <Link to={RPS}>가위바위보</Link>
+          <Link to={RSP}>가위바위보</Link>
         </li>
         <li>
           <Link to={HOME}>UI</Link>

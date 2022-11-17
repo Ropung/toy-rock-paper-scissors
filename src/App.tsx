@@ -3,12 +3,12 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Path from "./utils/routes/Path";
 // 컴포넌트
 import HomePage from "./components/home/HomePage";
-import RockPaperScissors from "./components/rps/RockPaperScissors";
 import GNB from "./components/common/nav/GNB";
+import RSPGameHome from "@components/rsp/RSPGameHome";
 
 function App() {
   const location = useLocation();
-  const { HOME, RPS } = Path;
+  const { HOME, RSP } = Path;
 
   const [hasNav, setHasNav] = useState<boolean>(false);
 
@@ -18,7 +18,7 @@ function App() {
         ? location.pathname.slice(0, -1)
         : location.pathname;
 
-    const hasNav = [HOME, RPS].includes(pathname);
+    const hasNav = [HOME, RSP].includes(pathname);
     setHasNav(hasNav);
   }, [location.pathname]);
 
@@ -27,7 +27,7 @@ function App() {
       {hasNav && <GNB />}
       <Routes>
         <Route path={HOME} element={<HomePage />} />
-        <Route path={RPS} element={<RockPaperScissors />} />
+        <Route path={RSP} element={<RSPGameHome />} />
       </Routes>
     </div>
   );

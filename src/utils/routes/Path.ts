@@ -1,6 +1,6 @@
 const Path = {
   HOME: "/",
-  RPS: "/rps",
+  RSP: "/rsp",
 };
 
 Object.freeze(Path);

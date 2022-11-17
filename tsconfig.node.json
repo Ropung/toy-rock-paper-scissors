@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
+    "types": ["node"],
     "composite": true,
     "module": "esnext",
     "moduleResolution": "node"

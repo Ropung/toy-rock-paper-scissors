@@ -16,6 +16,7 @@ import SelectRSPModal from "../../modal/SelectRSPModal";
 
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { motion } from "framer-motion";
+import RSPPianoMap from "@components/rsp/map/RSPPianoMap";
 
 // l, r in ["묵", "찌", "빠"]
 // const shoubu = (l: number, r: number) => ["비김", "L승", "R승"][(l + (3 - r)) % 3];
@@ -163,9 +164,12 @@ const RockScissorsPaperGame = () => {
           setSelectOpen={setSelectOpen}
         />
       )}
+      {/* 게임 화면표현 */}
+      <RSPPianoMap />
+
       {/* 플레이어들의 바텀창 */}
       <motion.div
-        className="fixed right-0 left-0 bottom-0 flex flex-col gap-2 min-h-fit border-t border-black bg-black bg-opacity-10 z-0"
+        className="fixed right-0 left-0 bottom-0 min-w-full min-h-fit flex flex-col gap-2 border-t border-black bg-black bg-opacity-10 z-0"
         animate={isModalMove ? "open" : "closed"}
         variants={{
           open: { y: "80%" },

@@ -12,7 +12,10 @@ import RSPGamePlayer from "@models/rsp/RSPGamePlayer";
 import { useEffect, useState } from "react";
 import RockScissorsPaper from "@models/rsp/RockScissorsPaper";
 
-import SelectRSPModal from "./modal/SelectRSPModal";
+import SelectRSPModal from "../../modal/SelectRSPModal";
+
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 // l, r in ["묵", "찌", "빠"]
 // const shoubu = (l: number, r: number) => ["비김", "L승", "R승"][(l + (3 - r)) % 3];
@@ -85,6 +88,8 @@ const RockScissorsPaperGame = () => {
   const [randomRSPAnimateInterval, setRandomRSPAnimateInterval] =
     useState<NodeJS.Timer | null>(null);
 
+  const [isModalMove, setModalMove] = useState<boolean>(false);
+
   // 플레이어 RSP 상태관리
   useEffect(() => {
     const newPlayer = { ...player };
@@ -148,84 +153,109 @@ const RockScissorsPaperGame = () => {
   }, []);
 
   return (
-    <div className="fixed right-0 left-0 bottom-0 min-h-fit bg-main-contra border-t-2 border-black">
-      <ul className="grid jm:grid-cols-2 grid-cols-4 px-4 py-4 gap-4 justify-items-center">
-        {/* 게임진행을 위한 모달창 */}
-        {isSelectOpen && (
-          <SelectRSPModal
-            rspSelect={rspSelect}
-            setRspSelect={setRspSelect}
-            isSelectOpen={isSelectOpen}
-            setSelectOpen={setSelectOpen}
-          />
-        )}
-
-        {/* 나 */}
-        <li className="min-h-fit flex flex-col justify-between border-main border-2 rounded-md py-4 px-6 bg-main text-main-contra">
-          <div className="w-1/2 flex justify-between gap-2">
-            <img
-              className="flex justify-center items-center"
-              src={`${
-                player.avatarUri.startsWith("avatar://")
-                  ? avatarMap[player.avatarUri as keyof typeof avatarMap]
-                  : player.avatarUri
+    <>
+      {/* 게임진행을 위한 모달창 */}
+      {isSelectOpen && (
+        <SelectRSPModal
+          rspSelect={rspSelect}
+          setRspSelect={setRspSelect}
+          isSelectOpen={isSelectOpen}
+          setSelectOpen={setSelectOpen}
+        />
+      )}
+      {/* 플레이어들의 바텀창 */}
+      <motion.div
+        className="fixed right-0 left-0 bottom-0 flex flex-col gap-2 min-h-fit border-t border-black bg-black bg-opacity-10 z-0"
+        animate={isModalMove ? "open" : "closed"}
+        variants={{
+          open: { y: "80%" },
+          closed: { y: 0 },
+        }}
+      >
+        <aside
+          className="w-screen h-10 cursor-pointer"
+          onClick={() => {
+            setModalMove(!isModalMove);
+          }}
+        >
+          <div className="w-full h-full flex items-center justify-center text-2xl text-main">
+            <FaChevronDown
+              className={`duration-500 ease-in-out ${
+                isModalMove ? "rotate-180 " : ""
               }`}
-              alt=""
-            />
-            <img
-              className="flex justify-center items-center"
-              onClick={() => {
-                setSelectOpen(!isSelectOpen);
-                setRspSelect(null);
-              }}
-              src={rspIconMap[player.rsp as RockScissorsPaper] ?? RandomRSP}
-              alt=""
             />
           </div>
-          <p className="w-full flex justify-center items-center text-xl font-bold">
-            {player.name}
-          </p>
-          <div className="w-full flex flex-row justify-center gap-2">
-            <img className="w-1/3" src={Rock} alt="" />
-            <img className="w-1/3" src={Rock} alt="" />
-            <img className="w-1/3" src={Rock} alt="" />
-          </div>
-        </li>
-
-        {/* counters */}
-        {counters.map((counter) => (
-          <li
-            key={counter.userid}
-            className="min-h-fit flex flex-col justify-between border-main border-2 rounded-md py-4 px-6 bg-main text-main-contra"
-          >
-            <div className="w-full flex justify-between gap-2">
+        </aside>
+        <ul className="w-full grid jm:grid-cols-2 grid-cols-4 pb-4 gap-4 justify-items-center">
+          {/* 나 */}
+          <li className="min-h-fit flex flex-col justify-between border-main border-2 rounded-md py-4 px-6 bg-main text-main-contra">
+            <div className="w-1/2 flex justify-between gap-2">
               <img
-                className="w-1/2 flex justify-center"
-                src={
-                  counter.avatarUri.startsWith("avatar://")
-                    ? avatarMap[counter.avatarUri as keyof typeof avatarMap]
-                    : counter.avatarUri
-                }
+                className="flex justify-center items-center"
+                src={`${
+                  player.avatarUri.startsWith("avatar://")
+                    ? avatarMap[player.avatarUri as keyof typeof avatarMap]
+                    : player.avatarUri
+                }`}
                 alt=""
               />
               <img
-                className="w-1/2 flex justify-center items-center"
-                src={rspIconMap[counter.rsp as RockScissorsPaper] ?? RandomRSP}
+                className="flex justify-center items-center"
+                onClick={() => {
+                  setSelectOpen(!isSelectOpen);
+                  setRspSelect(null);
+                }}
+                src={rspIconMap[player.rsp as RockScissorsPaper] ?? RandomRSP}
                 alt=""
               />
             </div>
             <p className="w-full flex justify-center items-center text-xl font-bold">
-              {counter.name}
+              {player.name}
             </p>
-            <div className="w-full flex flex-row gap-2 justify-between items-center">
+            <div className="w-full flex flex-row justify-center gap-2">
               <img className="w-1/3" src={Rock} alt="" />
               <img className="w-1/3" src={Rock} alt="" />
               <img className="w-1/3" src={Rock} alt="" />
             </div>
           </li>
-        ))}
-      </ul>
-    </div>
+
+          {/* counters */}
+          {counters.map((counter) => (
+            <li
+              key={counter.userid}
+              className="min-h-fit flex flex-col justify-between border-main border rounded-md py-4 px-6 bg-light text-main-contra"
+            >
+              <div className="w-full flex justify-between gap-2">
+                <img
+                  className="w-1/2 flex justify-center"
+                  src={
+                    counter.avatarUri.startsWith("avatar://")
+                      ? avatarMap[counter.avatarUri as keyof typeof avatarMap]
+                      : counter.avatarUri
+                  }
+                  alt=""
+                />
+                <img
+                  className="w-1/2 flex justify-center items-center"
+                  src={
+                    rspIconMap[counter.rsp as RockScissorsPaper] ?? RandomRSP
+                  }
+                  alt=""
+                />
+              </div>
+              <p className="w-full flex justify-center items-center text-xl font-bold">
+                {counter.name}
+              </p>
+              <div className="w-full flex flex-row gap-2 justify-between items-center">
+                <img className="w-1/3" src={Rock} alt="" />
+                <img className="w-1/3" src={Rock} alt="" />
+                <img className="w-1/3" src={Rock} alt="" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+    </>
   );
 };
 

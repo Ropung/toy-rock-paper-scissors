@@ -186,9 +186,9 @@ const RockScissorsPaperGame = () => {
             />
           </div>
         </aside>
-        <ul className="w-full grid jm:grid-cols-2 grid-cols-4 pb-4 gap-4 justify-items-center">
+        <ul className="w-full grid jm:grid-cols-2 grid-cols-4 pb-4 px-4 gap-4 justify-items-center">
           {/* 나 */}
-          <li className="min-h-fit flex flex-col justify-between border-main border-2 rounded-md py-4 px-6 bg-main text-main-contra">
+          <li className="min-h-fit flex flex-col justify-between border-dark border-2 rounded-md py-4 px-6 bg-main text-main-contra">
             <div className="w-1/2 flex justify-between gap-2">
               <img
                 className="flex justify-center items-center"
@@ -223,7 +223,7 @@ const RockScissorsPaperGame = () => {
           {counters.map((counter) => (
             <li
               key={counter.userid}
-              className="min-h-fit flex flex-col justify-between border-main border rounded-md py-4 px-6 bg-light text-main-contra"
+              className="min-h-fit flex flex-col justify-between border-dark border rounded-md py-4 px-6 bg-light text-main-contra"
             >
               <div className="w-full flex justify-between gap-2">
                 <img

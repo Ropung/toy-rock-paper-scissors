@@ -2,7 +2,7 @@ import MainButton from "@styles/button";
 import React, { FunctionComponent } from "react";
 import RSPLOGO from "@assets/img/rsp/random_rsp.png";
 
-export interface RSPGameStartPageProps {
+interface RSPGameStartPageProps {
   setStart: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

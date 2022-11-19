@@ -6,7 +6,7 @@ import Scissors from "@assets/img/rsp/scissors.png";
 import Paper from "@assets/img/rsp/paper.png";
 import RockScissorsPaper from "@models/rsp/RockScissorsPaper";
 
-export interface SelectRSPModalProps {
+interface SelectRSPModalProps {
   // 가위바위보 상태
   rspSelect: RockScissorsPaper | null;
   setRspSelect: React.Dispatch<React.SetStateAction<RockScissorsPaper | null>>;
@@ -20,6 +20,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
 
   const [selectTimeOver, setSelectTimeOver] = useState<number>(30);
 
+  // FIXME 모델로 분류
   const randomRPSMap: { [key in number]: RockScissorsPaper } = {
     0: "ROCK",
     1: "SCISSORS",
@@ -55,9 +56,9 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
       <aside
         className="fixed z-10 w-full h-full bg-black bg-opacity-20"
         //FIXME 테스트용 실제 서비스시 삭제
-        onClick={() => {
-          setSelectOpen(false);
-        }}
+        // onClick={() => {
+        //   setSelectOpen(false);
+        // }}
       ></aside>
       <aside
         className={`fixed z-20 w-[90%] h-fit flex flex-col gap-4 justify-center items-center bg-main text-main-contra border-2 border-black rounded px-6 py-8 ${rpsModalStyle}`}
@@ -104,24 +105,32 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
             alt=""
           />
         </div>
-        <MainButton
-          className="w-full border-2 border-black text-2xl font-bold !bg-main-contra text-main z-30"
-          onClick={() => {
-            if (rspSelect) {
+        <div className="w-full flex flex-col gap-2">
+          <MainButton
+            className="w-full border-2 border-black text-2xl font-bold !bg-main-contra text-main z-30"
+            onClick={() => {
+              // 기획상 승부에서 찌가 많이나올수록 게임이 흥미로워짐
+              const random = Math.round(Math.random() * 2);
+              const randomRPS = randomRPSMap[random];
+              setRspSelect(randomRPS);
+              setSelectOpen(false);
+            }}
+          >
+            무작위 선택
+          </MainButton>
+          <MainButton
+            className={`w-full border-2 border-black text-2xl font-bold !bg-main-contra text-main z-30 ${
+              rspSelect == null ? `!bg-opacity-70` : ``
+            }`}
+            disabled={!rspSelect}
+            onClick={() => {
               setRspSelect(rspSelect);
               setSelectOpen(false);
-              return;
-            }
-            // 기획상 승부에서 찌가 많이나올수록 게임이 흥미로워짐
-            const random = Math.round(Math.random() * 2);
-            const randomRPS = randomRPSMap[random];
-            setRspSelect(randomRPS);
-
-            setSelectOpen(false);
-          }}
-        >
-          선택하기
-        </MainButton>
+            }}
+          >
+            선택하기
+          </MainButton>
+        </div>
       </aside>
     </motion.div>
   );

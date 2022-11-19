@@ -54,7 +54,7 @@ const RSPPianoMap = () => {
           {/* 흑건 6 List  */}
           <ul
             ref={blackKeyULRef}
-            className="absolute z-10 grid grid-cols-7 w-fit h-[60%] items-center gap-1 justify-start left-0"
+            className="absolute z-[1] grid grid-cols-7 w-fit h-[60%] items-center gap-1 justify-start left-0"
           >
             <li className={`${blackKeyboard}`} />
             <li className={`${blackKeyboard}`} />

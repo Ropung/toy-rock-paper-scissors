@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Path from "../../../utils/routes/Path";
+import Path from "@utils/routes/Path";
 
 const GNB = () => {
   const { HOME, RSP } = Path;

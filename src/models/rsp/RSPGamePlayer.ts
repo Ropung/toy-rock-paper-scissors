@@ -7,6 +7,7 @@ export default interface RSPGamePlayer {
   // 프로젝트에 내장된 아바타를 사용하는 경우 avatar라고 하는 custom scheme을 사용(avatar:)
   avatarUri: string;
   rsp: RockScissorsPaper | null;
+  keyboardIndex: number;
   history: {
     win: number;
     lose: number;

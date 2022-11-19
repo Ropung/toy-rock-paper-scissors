@@ -13,10 +13,18 @@ interface SelectRSPModalProps {
   // 상태창 닫기
   isSelectOpen: boolean;
   setSelectOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  // 선택확인
+  setSelectConfirm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
-  const { rspSelect, setRspSelect, isSelectOpen, setSelectOpen } = props;
+  const {
+    rspSelect,
+    setRspSelect,
+    isSelectOpen,
+    setSelectOpen,
+    setSelectConfirm,
+  } = props;
 
   const [selectTimeOver, setSelectTimeOver] = useState<number>(30);
 
@@ -38,6 +46,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
       rspSelect == null && setRspSelect(randomRPS);
 
       setSelectOpen(false);
+      setSelectConfirm(true);
       return;
     }
     const timeout = setTimeout(() => {
@@ -114,6 +123,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
               const randomRPS = randomRPSMap[random];
               setRspSelect(randomRPS);
               setSelectOpen(false);
+              setSelectConfirm(true);
             }}
           >
             무작위 선택
@@ -126,6 +136,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
             onClick={() => {
               setRspSelect(rspSelect);
               setSelectOpen(false);
+              setSelectConfirm(true);
             }}
           >
             선택하기

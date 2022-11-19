@@ -50,6 +50,7 @@ const RockScissorsPaperGame = () => {
     userid: 0,
     name: "나",
     rsp: null,
+    keyboardIndex: 0,
     avatarUri: "avatar://ryan.png",
     history: getInitialHistoryState(),
   });
@@ -59,6 +60,7 @@ const RockScissorsPaperGame = () => {
       userid: 1,
       name: "프로도",
       rsp: null,
+      keyboardIndex: 0,
       avatarUri: "avatar://prodo.png",
       history: getInitialHistoryState(),
     },
@@ -66,6 +68,7 @@ const RockScissorsPaperGame = () => {
       userid: 2,
       name: "무지",
       rsp: null,
+      keyboardIndex: 0,
       avatarUri: "avatar://muzi.png",
       history: getInitialHistoryState(),
     },
@@ -73,13 +76,17 @@ const RockScissorsPaperGame = () => {
       userid: 3,
       name: "어피치",
       rsp: null,
+      keyboardIndex: 0,
       avatarUri: "avatar://apeach.png",
       history: getInitialHistoryState(),
     },
   ]);
-
+  // 플레이어 모달 오픈창
+  const [isModalMove, setModalMove] = useState<boolean>(false);
   // 플레이어 가위바위보 모달선택창
   const [isSelectOpen, setSelectOpen] = useState<boolean>(false);
+  // 플레이어 가위바위보 선택
+  const [isSelectConfirm, setSelectConfirm] = useState<boolean>(false);
 
   // 플레이어 가위바위보 모달창 선택 상태관리
   const [rspSelect, setRspSelect] = useState<RockScissorsPaper | null>(null);
@@ -88,8 +95,6 @@ const RockScissorsPaperGame = () => {
   // 기존 Interval을 Clear해 주기 위해서.
   const [randomRSPAnimateInterval, setRandomRSPAnimateInterval] =
     useState<NodeJS.Timer | null>(null);
-
-  const [isModalMove, setModalMove] = useState<boolean>(false);
 
   // 플레이어 RSP 상태관리
   useEffect(() => {
@@ -102,14 +107,22 @@ const RockScissorsPaperGame = () => {
     // 초기값 넣어서 기본값넣기
     const rspSet: RockScissorsPaper[] = ["ROCK", "SCISSORS", "PAPER"];
     // == null로 하면 undefined를 포함하여 비교해 줌.(undefined 또는 null일 때 true)
-    const random = Math.floor(Math.random() * 3); // 0, 1 ,2
-    const rsp = rspSet[random];
+    // const random = Math.floor(Math.random() * 3);
 
-    const newCounters = [...counters];
-    newCounters[0].rsp = rsp;
-    newCounters[1].rsp = rsp;
-    newCounters[2].rsp = rsp;
-    setCounters(newCounters);
+    const randoms = [0, 0, 0];
+    randoms[0] = Math.round(Math.random() * 2);
+    randoms[1] = Math.round(Math.random() * 2);
+    randoms[2] = Math.round(Math.random() * 2);
+
+    const result = [...counters];
+
+    result[0].rsp = rspSet[randoms[0]];
+    result[1].rsp = rspSet[randoms[1]];
+    result[2].rsp = rspSet[randoms[2]];
+
+    setCounters(result);
+
+    // setCounters(newCounters);
 
     const interval = setInterval(() => {
       if (
@@ -120,8 +133,8 @@ const RockScissorsPaperGame = () => {
         return;
       }
 
+      // 반복문을 썼지만 가독성이 떨어져 반복문 사용안함
       const randoms = [0, 0, 0];
-      //  1, 2
       randoms[0] = Math.floor(Math.random() * 2 + 1);
       randoms[1] = Math.floor(Math.random() * 2 + 1);
       randoms[2] = Math.floor(Math.random() * 2 + 1);
@@ -145,13 +158,15 @@ const RockScissorsPaperGame = () => {
       newCounters[0].rsp = rspMap[0];
       newCounters[1].rsp = rspMap[1];
       newCounters[2].rsp = rspMap[2];
+
       setCounters(newCounters);
     }, 200);
 
     setRandomRSPAnimateInterval(interval);
 
+    if (isSelectConfirm) clearInterval(interval);
     return () => clearInterval(interval);
-  }, []);
+  }, [isSelectConfirm]);
 
   return (
     <>
@@ -162,6 +177,7 @@ const RockScissorsPaperGame = () => {
           setRspSelect={setRspSelect}
           isSelectOpen={isSelectOpen}
           setSelectOpen={setSelectOpen}
+          setSelectConfirm={setSelectConfirm}
         />
       )}
       {/* 게임 화면표현 */}
@@ -208,6 +224,8 @@ const RockScissorsPaperGame = () => {
                 onClick={() => {
                   setSelectOpen(!isSelectOpen);
                   setRspSelect(null);
+                  // FIXME 게임상황에 따라 변경가능하게 기획해야됨
+                  setSelectConfirm(false);
                 }}
                 src={rspIconMap[player.rsp as RockScissorsPaper] ?? RandomRSP}
                 alt=""

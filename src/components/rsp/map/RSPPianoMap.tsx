@@ -48,7 +48,7 @@ const RSPPianoMap = () => {
 
   return (
     <div className="w-full h-full">
-      <div className="w-full h-[50%] bg-black bg-opacity-20 flex items-center justify-center">
+      <div className="w-full h-[50%] flex items-center justify-center">
         {/* 건반 Container*/}
         <div ref={keyboradRef} className="relative h-[80%]">
           {/* 흑건 6 List  */}

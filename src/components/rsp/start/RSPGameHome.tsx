@@ -7,8 +7,11 @@ const RSPGameHome = () => {
 
   return (
     <div className="w-screen h-screen bg-main-contra">
-      {!isStart && <RSPGameStartPage setStart={setStart} />}
-      {isStart && <RockScissorsPaperGame />}
+      {!isStart ? (
+        <RSPGameStartPage setStart={setStart} />
+      ) : (
+        <RockScissorsPaperGame />
+      )}
     </div>
   );
 };

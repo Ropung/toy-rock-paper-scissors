@@ -277,13 +277,6 @@ const RockScissorsPaperGame = () => {
     return winners;
   }, [player, counters]);
 
-  // 플레이어 RSP 상태관리
-  useEffect(() => {
-    const newPlayer = { ...player };
-    newPlayer.rsp = rspSelect;
-    setPlayer(newPlayer);
-  }, [rspSelect]);
-
   useEffect(() => {
     // 초기값 넣어서 기본값넣기
     const rspSet: RockScissorsPaper[] = ["ROCK", "SCISSORS", "PAPER"];
@@ -441,8 +434,12 @@ const RockScissorsPaperGame = () => {
       {/* 게임진행을 위한 모달창 */}
       {isSelectOpen && (
         <SelectRSPModal
-          rspSelect={rspSelect}
-          setRspSelect={setRspSelect}
+          rspSelect={player.rsp}
+          setRspSelect={(rspSelect) => {
+            const newPlayer = { ...player };
+            newPlayer.rsp = rspSelect;
+            setPlayer(newPlayer);
+          }}
           isSelectOpen={isSelectOpen}
           setSelectOpen={setSelectOpen}
           setSelectConfirm={setSelectConfirm}

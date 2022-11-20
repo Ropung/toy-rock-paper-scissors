@@ -10,12 +10,12 @@ import RSPGamePlayer from "@models/rsp/RSPGamePlayer";
 interface SelectRSPModalProps {
   // 가위바위보 상태
   rspSelect: RockScissorsPaper | null;
-  setRspSelect: React.Dispatch<React.SetStateAction<RockScissorsPaper | null>>;
+  setRspSelect: (rsp: RockScissorsPaper | null) => void;
   // 상태창 닫기
   isSelectOpen: boolean;
-  setSelectOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectOpen: (selectOpens: boolean) => void;
   // 선택확인
-  setSelectConfirm: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectConfirm: (selectConfirmed: boolean) => void;
   // 승자결정
   decideWinners: () => RSPGamePlayer[];
 }
@@ -30,7 +30,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
     decideWinners,
   } = props;
 
-  const [selectTimeOver, setSelectTimeOver] = useState<number>(30);
+  const [selectTimeOver, setSelectTimeOver] = useState<number>(3);
 
   // FIXME 모델로 분류
   const randomRPSMap: { [key in number]: RockScissorsPaper } = {

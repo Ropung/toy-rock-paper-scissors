@@ -5,8 +5,8 @@ export interface RSPPianoMapProps {
 }
 
 const RSPPianoMap: FunctionComponent<RSPPianoMapProps> = ({ children }) => {
-  const whiteKeyboard = "w-[10vw] max-w-[5rem] h-full bg-white";
-  const blackKeyboard = "w-[10vw] max-w-[5rem] h-full bg-black";
+  const whiteKeyboard = "w-[10vw] h-full bg-white";
+  const blackKeyboard = "w-[10vw] h-full bg-black";
 
   const keyboradRef = useRef<HTMLDivElement | null>(null);
   const whiteKeyULRef = useRef<HTMLUListElement | null>(null);

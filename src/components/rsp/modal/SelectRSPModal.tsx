@@ -5,6 +5,7 @@ import Rock from "@assets/img/rsp/Rock.png";
 import Scissors from "@assets/img/rsp/scissors.png";
 import Paper from "@assets/img/rsp/paper.png";
 import RockScissorsPaper from "@models/rsp/RockScissorsPaper";
+import RSPGamePlayer from "@models/rsp/RSPGamePlayer";
 
 interface SelectRSPModalProps {
   // 가위바위보 상태
@@ -15,6 +16,8 @@ interface SelectRSPModalProps {
   setSelectOpen: React.Dispatch<React.SetStateAction<boolean>>;
   // 선택확인
   setSelectConfirm: React.Dispatch<React.SetStateAction<boolean>>;
+  // 승자결정
+  decideWinners: () => RSPGamePlayer[];
 }
 
 const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
@@ -24,6 +27,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
     isSelectOpen,
     setSelectOpen,
     setSelectConfirm,
+    decideWinners,
   } = props;
 
   const [selectTimeOver, setSelectTimeOver] = useState<number>(30);
@@ -134,7 +138,6 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
             }`}
             disabled={!rspSelect}
             onClick={() => {
-              setRspSelect(rspSelect);
               setSelectOpen(false);
               setSelectConfirm(true);
             }}

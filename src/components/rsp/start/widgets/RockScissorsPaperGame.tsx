@@ -61,7 +61,7 @@ const RockScissorsPaperGame = () => {
     {
       username: "COM1",
       name: "프로도",
-      rsp: null,
+      rsp: "ROCK",
       boardIndex: 0,
       avatarUri: "avatar://prodo.png",
       history: getInitialHistoryState(),
@@ -69,7 +69,7 @@ const RockScissorsPaperGame = () => {
     {
       username: "COM2",
       name: "무지",
-      rsp: null,
+      rsp: "SCISSORS",
       boardIndex: 0,
       avatarUri: "avatar://muzi.png",
       history: getInitialHistoryState(),
@@ -77,18 +77,40 @@ const RockScissorsPaperGame = () => {
     {
       username: "COM3",
       name: "어피치",
-      rsp: null,
+      rsp: "PAPER",
       boardIndex: 0,
       avatarUri: "avatar://apeach.png",
       history: getInitialHistoryState(),
     },
   ]);
+
+  const [playerPosition, setPlayerPosition] = useState<{
+    left: string;
+    top: string;
+  }>({
+    left: "",
+    top: "",
+  });
+
+  const [countersPosition, setCountersPosition] = useState<
+    {
+      left: string;
+      top: string;
+    }[]
+  >([
+    { left: "", top: "" },
+    { left: "", top: "" },
+    { left: "", top: "" },
+  ]);
+
   // 플레이어 모달 오픈창
   const [isModalMove, setModalMove] = useState<boolean>(false);
   // 플레이어 가위바위보 모달선택창
   const [isSelectOpen, setSelectOpen] = useState<boolean>(false);
   // 플레이어 가위바위보 선택
   const [isSelectConfirm, setSelectConfirm] = useState<boolean>(false);
+  // All player RSP 결정됨
+  const [isEveryRSPDecided, setEveryRSPDecided] = useState<boolean>(false);
 
   // 플레이어 가위바위보 모달창 선택 상태관리
   const [rspSelect, setRspSelect] = useState<RockScissorsPaper | null>(null);
@@ -240,7 +262,7 @@ const RockScissorsPaperGame = () => {
 
     // 승패를 결정한 답안지
     const winnerLRMatrix = [
-      // D: DRAW , L: LEFT WIN, R: RIGHT WIN
+      // D: DRAW(unexpected), L: LEFT WIN, R: RIGHT WIN
       ["D", "L", "R"],
       ["R", "D", "L"],
       ["L", "R", "D"],
@@ -268,18 +290,22 @@ const RockScissorsPaperGame = () => {
     // == null로 하면 undefined를 포함하여 비교해 줌.(undefined 또는 null일 때 true)
     // const random = Math.floor(Math.random() * 3);
 
-    const randoms = [0, 0, 0];
-    randoms[0] = Math.round(Math.random() * 2);
-    randoms[1] = Math.round(Math.random() * 2);
-    randoms[2] = Math.round(Math.random() * 2);
+    if (isSelectConfirm) {
+      const randoms = [0, 0, 0];
+      randoms[0] = Math.round(Math.random() * 2);
+      randoms[1] = Math.round(Math.random() * 2);
+      randoms[2] = Math.round(Math.random() * 2);
 
-    const result = [...counters];
+      const result = [...counters];
 
-    result[0].rsp = rspSet[randoms[0]];
-    result[1].rsp = rspSet[randoms[1]];
-    result[2].rsp = rspSet[randoms[2]];
+      result[0].rsp = rspSet[randoms[0]];
+      result[1].rsp = rspSet[randoms[1]];
+      result[2].rsp = rspSet[randoms[2]];
 
-    setCounters(result);
+      setCounters(result);
+      setEveryRSPDecided(true);
+      return;
+    }
 
     // setCounters(newCounters);
 
@@ -289,6 +315,7 @@ const RockScissorsPaperGame = () => {
         counters[1].rsp == null ||
         counters[2].rsp == null
       ) {
+        // unexpected
         return;
       }
 
@@ -323,9 +350,39 @@ const RockScissorsPaperGame = () => {
 
     setRandomRSPAnimateInterval(interval);
 
-    if (isSelectConfirm) clearInterval(interval);
     return () => clearInterval(interval);
   }, [isSelectConfirm]);
+
+  useEffect(() => {
+    if (!isEveryRSPDecided) return;
+    const winners = decideWinners();
+
+    for (const winner of winners) {
+      // Pop from 기존 건반
+      const originPianoKey = pianoKeys[winner.boardIndex];
+      const popIndex = originPianoKey.playerList
+        .map(({ username }) => username)
+        .indexOf(winner.username);
+      originPianoKey.playerList.splice(popIndex, 1);
+
+      // 다음 보드 인덱스
+      winner.boardIndex =
+        winner.boardIndex +
+        {
+          ROCK: 1,
+          SCISSORS: 2,
+          PAPER: 5,
+        }[winner.rsp!]; // not null 보장(로직)
+
+      const newPianoKey = pianoKeys[winner.boardIndex];
+      newPianoKey.playerList.push(winner);
+    }
+
+    setPlayer({ ...player });
+    setCounters([...counters]);
+    setPianoKeys(pianoKeys);
+    setEveryRSPDecided(false);
+  }, [isEveryRSPDecided, pianoKeys]);
 
   useEffect(() => {
     const playerAvatar = player.avatarUri.startsWith("avatar://")
@@ -334,6 +391,7 @@ const RockScissorsPaperGame = () => {
 
     setPlayerAvatar(playerAvatar);
   }, [player]);
+
   useEffect(() => {
     const countersAvatar = counters.map((counter) =>
       counter.avatarUri.startsWith("avatar://")
@@ -343,6 +401,40 @@ const RockScissorsPaperGame = () => {
 
     setCountersAvatars(countersAvatar);
   }, [counters]);
+
+  useEffect(() => {
+    const targetPianoKey = pianoKeys[player.boardIndex];
+    const myIndexOnPianoKey = targetPianoKey.playerList
+      .map(({ username }) => username)
+      .indexOf(player.username);
+
+    const playerPosition = {
+      left: pianoKeys[player.boardIndex].basePosition.left,
+      top: `calc(${pianoKeys[player.boardIndex].basePosition.top} + ${
+        myIndexOnPianoKey * 6
+      }vw)`,
+    };
+
+    setPlayerPosition(playerPosition);
+
+    const countersPositions = counters.map((counter) => {
+      const targetPianoKey = pianoKeys[counter.boardIndex];
+      const indexOnPianoKey = targetPianoKey.playerList
+        .map(({ username }) => username)
+        .indexOf(counter.username);
+
+      const counterPosition = {
+        left: pianoKeys[counter.boardIndex].basePosition.left,
+        top: `calc(${pianoKeys[counter.boardIndex].basePosition.top} + ${
+          indexOnPianoKey * 6
+        }vw)`,
+      };
+
+      return counterPosition;
+    });
+
+    setCountersPosition(countersPositions);
+  }, [player, counters, pianoKeys]);
 
   return (
     <>
@@ -354,31 +446,37 @@ const RockScissorsPaperGame = () => {
           isSelectOpen={isSelectOpen}
           setSelectOpen={setSelectOpen}
           setSelectConfirm={setSelectConfirm}
+          decideWinners={decideWinners}
         />
       )}
       {/* 게임 화면표현 */}
       <RSPPianoMap>
-        <PlayerPiece
-          src={playerAvatar}
-          left={pianoKeys[player.boardIndex].basePosition.left}
-          top={pianoKeys[player.boardIndex].basePosition.top}
-        />
-        {countersAvatars.map((counterAvatar, index) => {
-          const { username, boardIndex } = counters[index];
+        {(() => {
+          const { boardIndex } = player;
           const targetPianoKey = pianoKeys[boardIndex];
 
-          const myIndexOnPianoKey = targetPianoKey.playerList.indexOf(
-            counters[index]
+          const myIndexOnPianoKey = targetPianoKey.playerList
+            .map(({ username }) => username)
+            .indexOf(player.username);
+
+          return (
+            <PlayerPiece
+              src={playerAvatar}
+              left={playerPosition.left}
+              top={playerPosition.top}
+            />
           );
+        })()}
+
+        {countersAvatars.map((counterAvatar, index) => {
+          const { username } = counters[index];
 
           return (
             <PlayerPiece
               key={`PLAYER-PIECE-${username}`}
               src={counterAvatar}
-              left={pianoKeys[boardIndex].basePosition.left}
-              top={`calc(${pianoKeys[boardIndex].basePosition.top} + ${
-                myIndexOnPianoKey * 6
-              }vw)`}
+              left={countersPosition[index].left}
+              top={countersPosition[index].top}
             />
           );
         })}

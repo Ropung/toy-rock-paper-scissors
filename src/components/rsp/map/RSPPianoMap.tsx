@@ -1,6 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { FunctionComponent, useEffect, useRef } from "react";
 
-const RSPPianoMap = () => {
+export interface RSPPianoMapProps {
+  children: React.ReactNode;
+}
+
+const RSPPianoMap: FunctionComponent<RSPPianoMapProps> = ({ children }) => {
   const whiteKeyboard = "w-[10vw] max-w-[5rem] h-full bg-white";
   const blackKeyboard = "w-[10vw] max-w-[5rem] h-full bg-black";
 
@@ -30,12 +34,6 @@ const RSPPianoMap = () => {
         // 고친다면:
         ((whiteKeyULRef.current.firstChild as HTMLElement).offsetWidth >> 1) + 2
       }px)`;
-
-      console.log(
-        "test",
-        keyboradRef.current.style.width,
-        blackKeyULRef.current.style.transform
-      );
     };
 
     setKeyboardDivSize();
@@ -44,11 +42,10 @@ const RSPPianoMap = () => {
       setKeyboardDivSize();
     };
   }, []);
-  // onresize = (event) => {};
 
   return (
     <div className="w-full h-full">
-      <div className="w-full h-[50%] flex items-center justify-center">
+      <div className="w-full h-[60%] flex items-center justify-center">
         {/* 건반 Container*/}
         <div ref={keyboradRef} className="relative h-[80%]">
           {/* 흑건 6 List  */}
@@ -77,6 +74,7 @@ const RSPPianoMap = () => {
             <li className={`${whiteKeyboard}`} />
             <li className={`${whiteKeyboard}`} />
           </ul>
+          {children}
         </div>
       </div>
     </div>

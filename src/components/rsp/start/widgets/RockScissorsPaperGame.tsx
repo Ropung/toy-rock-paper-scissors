@@ -17,6 +17,7 @@ import SelectRSPModal from "../../modal/SelectRSPModal";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import RSPPianoMap from "@components/rsp/map/RSPPianoMap";
+import PlayerPiece from "@components/rsp/piece/PlayerPiece";
 
 // l, r in ["묵", "찌", "빠"]
 // const shoubu = (l: number, r: number) => ["비김", "L승", "R승"][(l + (3 - r)) % 3];
@@ -47,36 +48,36 @@ const RockScissorsPaperGame = () => {
   });
 
   const [player, setPlayer] = useState<RSPGamePlayer>({
-    userid: 0,
+    username: "me",
     name: "나",
     rsp: null,
-    keyboardIndex: 0,
+    boardIndex: 0,
     avatarUri: "avatar://ryan.png",
     history: getInitialHistoryState(),
   });
 
   const [counters, setCounters] = useState<RSPGamePlayer[]>([
     {
-      userid: 1,
+      username: "COM1",
       name: "프로도",
       rsp: null,
-      keyboardIndex: 0,
+      boardIndex: 0,
       avatarUri: "avatar://prodo.png",
       history: getInitialHistoryState(),
     },
     {
-      userid: 2,
+      username: "COM2",
       name: "무지",
       rsp: null,
-      keyboardIndex: 0,
+      boardIndex: 0,
       avatarUri: "avatar://muzi.png",
       history: getInitialHistoryState(),
     },
     {
-      userid: 3,
+      username: "COM3",
       name: "어피치",
       rsp: null,
-      keyboardIndex: 0,
+      boardIndex: 0,
       avatarUri: "avatar://apeach.png",
       history: getInitialHistoryState(),
     },
@@ -95,6 +96,9 @@ const RockScissorsPaperGame = () => {
   // 기존 Interval을 Clear해 주기 위해서.
   const [randomRSPAnimateInterval, setRandomRSPAnimateInterval] =
     useState<NodeJS.Timer | null>(null);
+
+  const [playerAvatar, setPlayerAvatar] = useState<string>("");
+  const [countersAvatars, setCountersAvatars] = useState<string[]>([]);
 
   // 플레이어 RSP 상태관리
   useEffect(() => {
@@ -168,6 +172,22 @@ const RockScissorsPaperGame = () => {
     return () => clearInterval(interval);
   }, [isSelectConfirm]);
 
+  useEffect(() => {
+    const playerAvatar = player.avatarUri.startsWith("avatar://")
+      ? avatarMap[player.avatarUri as keyof typeof avatarMap]
+      : player.avatarUri;
+    setPlayerAvatar(playerAvatar);
+  }, [player]);
+  useEffect(() => {
+    const countersAvatar = counters.map((counter) =>
+      counter.avatarUri.startsWith("avatar://")
+        ? avatarMap[counter.avatarUri as keyof typeof avatarMap]
+        : counter.avatarUri
+    );
+
+    setCountersAvatars(countersAvatar);
+  }, [counters]);
+
   return (
     <>
       {/* 게임진행을 위한 모달창 */}
@@ -181,7 +201,18 @@ const RockScissorsPaperGame = () => {
         />
       )}
       {/* 게임 화면표현 */}
-      <RSPPianoMap />
+      <RSPPianoMap>
+        <PlayerPiece src={playerAvatar} player={player} left={1} top={1} />
+        {countersAvatars.map((counterAvatar, index) => (
+          <PlayerPiece
+            key={`PLAYER-PIECE-${counters[index].username}`}
+            src={counterAvatar}
+            player={counters[index]}
+            left={1}
+            top={1}
+          />
+        ))}
+      </RSPPianoMap>
 
       {/* 플레이어들의 바텀창 */}
       <motion.div
@@ -212,11 +243,7 @@ const RockScissorsPaperGame = () => {
             <div className="w-1/2 flex justify-between gap-2">
               <img
                 className="flex justify-center items-center"
-                src={`${
-                  player.avatarUri.startsWith("avatar://")
-                    ? avatarMap[player.avatarUri as keyof typeof avatarMap]
-                    : player.avatarUri
-                }`}
+                src={playerAvatar}
                 alt=""
               />
               <img
@@ -242,19 +269,15 @@ const RockScissorsPaperGame = () => {
           </li>
 
           {/* counters */}
-          {counters.map((counter) => (
+          {counters.map((counter, index) => (
             <li
-              key={counter.userid}
+              key={counter.username}
               className="min-h-fit flex flex-col justify-between border-dark border rounded-md py-4 px-6 bg-light text-main-contra"
             >
               <div className="w-full flex justify-between gap-2">
                 <img
                   className="w-1/2 flex justify-center"
-                  src={
-                    counter.avatarUri.startsWith("avatar://")
-                      ? avatarMap[counter.avatarUri as keyof typeof avatarMap]
-                      : counter.avatarUri
-                  }
+                  src={countersAvatars[index]}
                   alt=""
                 />
                 <img

@@ -1,6 +1,7 @@
+import RSPGamePlayer from "./RSPGamePlayer";
+
 export default interface RPSPianoKey {
   maxSeat: number;
-  startPosition: string;
-
-  // playerList: RPSGamePlayer[];
+  basePosition: string;
+  playerList: RSPGamePlayer[];
 }

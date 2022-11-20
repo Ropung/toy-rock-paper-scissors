@@ -18,6 +18,7 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import RSPPianoMap from "@components/rsp/map/RSPPianoMap";
 import PlayerPiece from "@components/rsp/piece/PlayerPiece";
+import RPSPianoKey from "@models/rsp/RPSPianoKey";
 
 // l, r in ["묵", "찌", "빠"]
 // const shoubu = (l: number, r: number) => ["비김", "L승", "R승"][(l + (3 - r)) % 3];
@@ -91,6 +92,124 @@ const RockScissorsPaperGame = () => {
 
   // 플레이어 가위바위보 모달창 선택 상태관리
   const [rspSelect, setRspSelect] = useState<RockScissorsPaper | null>(null);
+
+  const [pianoKeys, setPianoKeys] = useState<RPSPianoKey[]>([
+    // 왼쪽 5
+    {
+      maxSeat: 4,
+      basePosition: {
+        left: "5vw",
+        top: "55%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 2,
+      basePosition: {
+        left: "calc(10vw + 0.125rem)",
+        top: "30%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 4,
+      basePosition: {
+        left: "calc(15vw + 0.25rem)",
+        top: "55%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 2,
+      basePosition: {
+        left: "calc(20vw + 0.25rem + 0.125rem)",
+        top: "30%",
+      },
+      playerList: [],
+    },
+
+    {
+      maxSeat: 4,
+      basePosition: {
+        left: "calc(25vw + 0.5rem)",
+        top: "55%",
+      },
+      playerList: [],
+    },
+    //
+    {
+      maxSeat: 4,
+      basePosition: {
+        left: "calc(35vw + 0.75rem)",
+        top: "55%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 2,
+      basePosition: {
+        left: "calc(40vw + 0.75rem + 0.125rem)",
+        top: "30%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 4,
+      basePosition: {
+        left: "calc(45vw + 1rem)",
+        top: "55%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 2,
+      basePosition: {
+        left: "calc(50vw + 1rem + 0.125rem)",
+        top: "30%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 4,
+      basePosition: {
+        left: "calc(55vw + 1.25rem)",
+        top: "55%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 2,
+      basePosition: {
+        left: "calc(60vw + 1.25rem + 0.125rem)",
+        top: "30%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 4,
+      basePosition: {
+        left: "calc(65vw + 1.5rem)",
+        top: "55%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 2,
+      basePosition: {
+        left: "calc(70vw + 1.5rem + 0.125rem)",
+        top: "30%",
+      },
+      playerList: [],
+    },
+    {
+      maxSeat: 4,
+      basePosition: {
+        left: "calc(75vw + 1.75rem)",
+        top: "55%",
+      },
+      playerList: [],
+    },
+  ]);
 
   // 각 상황(게임 시작, 게임 종료, 냈을 때, 시간이 끝날 때 등)에 따라
   // 기존 Interval을 Clear해 주기 위해서.
@@ -202,13 +321,17 @@ const RockScissorsPaperGame = () => {
       )}
       {/* 게임 화면표현 */}
       <RSPPianoMap>
-        <PlayerPiece src={playerAvatar} left={1} top={1} />
+        <PlayerPiece
+          src={playerAvatar}
+          left={pianoKeys[13].basePosition.left}
+          top={pianoKeys[13].basePosition.top}
+        />
         {countersAvatars.map((counterAvatar, index) => (
           <PlayerPiece
             key={`PLAYER-PIECE-${counters[index].username}`}
             src={counterAvatar}
-            left={1}
-            top={1}
+            left={`calc(20vw + 0.5rem)`}
+            top={`calc(30% + ${6 * (index + 1)}vw)`}
           />
         ))}
       </RSPPianoMap>

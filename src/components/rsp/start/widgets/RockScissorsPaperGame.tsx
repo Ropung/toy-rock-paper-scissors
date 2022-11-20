@@ -351,26 +351,43 @@ const RockScissorsPaperGame = () => {
     const winners = decideWinners();
 
     for (const winner of winners) {
-      // Pop from 기존 건반
-      const originPianoKey = pianoKeys[winner.boardIndex];
-      const popIndex = originPianoKey.playerList
-        .map(({ username }) => username)
-        .indexOf(winner.username);
-      originPianoKey.playerList.splice(popIndex, 1);
-
-      // 다음 보드 인덱스
-      winner.boardIndex =
+      const prevIndex = winner.boardIndex;
+      let nextIndex =
         winner.boardIndex +
         {
           ROCK: 1,
           SCISSORS: 2,
           PAPER: 5,
-        }[winner.rsp!]; // not null 보장(로직)
+        }[winner.rsp!];
+      const originPianoKey = pianoKeys[prevIndex];
+      let newPianoKey = pianoKeys[nextIndex];
+      const originWinnerLenth = winners.filter((winner) => {
+        return winner.boardIndex === prevIndex;
+      }).length;
+      const restSeat = newPianoKey.maxSeat - newPianoKey.playerList.length;
 
-      winner.boardIndex = Math.min(winner.boardIndex, pianoKeys.length - 1);
+      // 남은자리가 부족하면
+      let gain = 0;
+      if (originWinnerLenth > restSeat) {
+        //
+        gain = newPianoKey.playerList.length === 0 ? -1 : 1;
+      }
+
+      // Pop from 기존 건반
+      const popIndex = originPianoKey.playerList
+        .map(({ username }) => username)
+        .indexOf(winner.username);
+      originPianoKey.playerList.splice(popIndex, 1);
+
+      // 말이동 적용 및 limit 결승점 제한
+      nextIndex += gain;
+      newPianoKey = pianoKeys[nextIndex];
+      winner.boardIndex = Math.min(nextIndex, pianoKeys.length - 1);
 
       // push to 새 건반
-      const newPianoKey = pianoKeys[winner.boardIndex];
+      // if (newPianoKey.maxSeat === 2) {
+      //   prevIndex
+      // }
       newPianoKey.playerList.push(winner);
     }
 

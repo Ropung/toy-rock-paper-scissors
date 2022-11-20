@@ -352,13 +352,15 @@ const RockScissorsPaperGame = () => {
 
     for (const winner of winners) {
       const prevIndex = winner.boardIndex;
-      let nextIndex =
+      let nextIndex = Math.min(
         winner.boardIndex +
-        {
-          ROCK: 1,
-          SCISSORS: 2,
-          PAPER: 5,
-        }[winner.rsp!];
+          {
+            ROCK: 1,
+            SCISSORS: 2,
+            PAPER: 5,
+          }[winner.rsp!],
+        pianoKeys.length - 1
+      );
       const originPianoKey = pianoKeys[prevIndex];
       let newPianoKey = pianoKeys[nextIndex];
       const originWinnerLenth = winners.filter((winner) => {
@@ -380,9 +382,9 @@ const RockScissorsPaperGame = () => {
       originPianoKey.playerList.splice(popIndex, 1);
 
       // 말이동 적용 및 limit 결승점 제한
-      nextIndex += gain;
+      nextIndex = Math.min(nextIndex + gain, pianoKeys.length - 1);
       newPianoKey = pianoKeys[nextIndex];
-      winner.boardIndex = Math.min(nextIndex, pianoKeys.length - 1);
+      winner.boardIndex = nextIndex;
 
       // push to 새 건반
       // if (newPianoKey.maxSeat === 2) {

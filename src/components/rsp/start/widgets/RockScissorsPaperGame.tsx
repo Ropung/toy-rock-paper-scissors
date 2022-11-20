@@ -367,6 +367,9 @@ const RockScissorsPaperGame = () => {
           PAPER: 5,
         }[winner.rsp!]; // not null 보장(로직)
 
+      winner.boardIndex = Math.min(winner.boardIndex, pianoKeys.length - 1);
+
+      // push to 새 건반
       const newPianoKey = pianoKeys[winner.boardIndex];
       newPianoKey.playerList.push(winner);
     }

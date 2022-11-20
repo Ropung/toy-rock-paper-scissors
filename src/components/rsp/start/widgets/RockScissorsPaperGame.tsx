@@ -101,7 +101,7 @@ const RockScissorsPaperGame = () => {
         left: "5vw",
         top: "55%",
       },
-      playerList: [],
+      playerList: [player, ...counters],
     },
     {
       maxSeat: 2,
@@ -295,6 +295,7 @@ const RockScissorsPaperGame = () => {
     const playerAvatar = player.avatarUri.startsWith("avatar://")
       ? avatarMap[player.avatarUri as keyof typeof avatarMap]
       : player.avatarUri;
+
     setPlayerAvatar(playerAvatar);
   }, [player]);
   useEffect(() => {
@@ -323,17 +324,28 @@ const RockScissorsPaperGame = () => {
       <RSPPianoMap>
         <PlayerPiece
           src={playerAvatar}
-          left={pianoKeys[13].basePosition.left}
-          top={pianoKeys[13].basePosition.top}
+          left={pianoKeys[player.boardIndex].basePosition.left}
+          top={pianoKeys[player.boardIndex].basePosition.top}
         />
-        {countersAvatars.map((counterAvatar, index) => (
-          <PlayerPiece
-            key={`PLAYER-PIECE-${counters[index].username}`}
-            src={counterAvatar}
-            left={`calc(20vw + 0.5rem)`}
-            top={`calc(30% + ${6 * (index + 1)}vw)`}
-          />
-        ))}
+        {countersAvatars.map((counterAvatar, index) => {
+          const { username, boardIndex } = counters[index];
+          const targetPianoKey = pianoKeys[boardIndex];
+
+          const myIndexOnPianoKey = targetPianoKey.playerList.indexOf(
+            counters[index]
+          );
+
+          return (
+            <PlayerPiece
+              key={`PLAYER-PIECE-${username}`}
+              src={counterAvatar}
+              left={pianoKeys[boardIndex].basePosition.left}
+              top={`calc(${pianoKeys[boardIndex].basePosition.top} + ${
+                myIndexOnPianoKey * 6
+              }vw)`}
+            />
+          );
+        })}
       </RSPPianoMap>
 
       {/* 플레이어들의 바텀창 */}

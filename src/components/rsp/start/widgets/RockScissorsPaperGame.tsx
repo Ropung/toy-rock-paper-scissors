@@ -202,12 +202,11 @@ const RockScissorsPaperGame = () => {
       )}
       {/* 게임 화면표현 */}
       <RSPPianoMap>
-        <PlayerPiece src={playerAvatar} player={player} left={1} top={1} />
+        <PlayerPiece src={playerAvatar} left={1} top={1} />
         {countersAvatars.map((counterAvatar, index) => (
           <PlayerPiece
             key={`PLAYER-PIECE-${counters[index].username}`}
             src={counterAvatar}
-            player={counters[index]}
             left={1}
             top={1}
           />

@@ -9,7 +9,7 @@ import Paper from "@assets/img/rsp/paper.png";
 import RandomRSP from "@assets/img/rsp/random_rsp.png";
 
 import RSPGamePlayer from "@models/rsp/RSPGamePlayer";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import RockScissorsPaper from "@models/rsp/RockScissorsPaper";
 
 import SelectRSPModal from "../../modal/SelectRSPModal";
@@ -219,6 +219,42 @@ const RockScissorsPaperGame = () => {
   const [playerAvatar, setPlayerAvatar] = useState<string>("");
   const [countersAvatars, setCountersAvatars] = useState<string[]>([]);
 
+  const decideWinners = useCallback(() => {
+    const rspSet = [
+      ...new Set([player.rsp, ...counters.map(({ rsp }) => rsp)]),
+    ];
+
+    if (rspSet.length !== 2) {
+      // DRAW
+      return [];
+    }
+
+    const rspValues = {
+      ROCK: 0,
+      SCISSORS: 1,
+      PAPER: 2,
+    };
+
+    const l = rspValues[rspSet[0] as RockScissorsPaper]; // Runtime에 보장됨(느낌표 대체 가능하나 삼갔음)
+    const r = rspValues[rspSet[1] as RockScissorsPaper];
+
+    // 승패를 결정한 답안지
+    const winnerLRMatrix = [
+      // D: DRAW , L: LEFT WIN, R: RIGHT WIN
+      ["D", "L", "R"],
+      ["R", "D", "L"],
+      ["L", "R", "D"],
+    ];
+
+    const winnerLR = winnerLRMatrix[l][r];
+
+    const winnerRSP = winnerLR === "L" ? rspSet[0] : rspSet[1];
+
+    const players = [player, ...counters];
+    const winners = players.filter(({ rsp }) => rsp === winnerRSP);
+    return winners;
+  }, [player, counters]);
+
   // 플레이어 RSP 상태관리
   useEffect(() => {
     const newPlayer = { ...player };
@@ -383,7 +419,9 @@ const RockScissorsPaperGame = () => {
               <img
                 className="flex justify-center items-center"
                 onClick={() => {
-                  setSelectOpen(!isSelectOpen);
+                  // 모달창 오픈
+                  setSelectOpen(true);
+                  // 가위바위보 상태 초기화
                   setRspSelect(null);
                   // FIXME 게임상황에 따라 변경가능하게 기획해야됨
                   setSelectConfirm(false);

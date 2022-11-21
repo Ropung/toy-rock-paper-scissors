@@ -468,12 +468,36 @@ const RockScissorsPaperGame = () => {
           isSelectOpen={isSelectOpen}
           setSelectOpen={setSelectOpen}
           setSelectConfirm={setSelectConfirm}
-          decideWinners={decideWinners}
         />
       )}
+      {opensHelp && (
+        <aside className="fixed bg-black bg-opacity-50 left-0 right-0 top-0 bottom-0 z-30" />
+      )}
+      {opensHelp && (
+        <motion.aside
+          className="fixed bg-main border-4 p-2 border-main-contra left-[12vw] w-[12vw] bottom-[13vw] h-[12vw] rounded-full z-[35]"
+          initial={{ scale: 0.95 }}
+          animate={{ scale: 1.0 }}
+        >
+          <img
+            className={`relative flex justify-center items-center`}
+            onClick={() => {
+              // 모달창 오픈
+              setSelectOpen(true);
+              // 가위바위보 상태 초기화
+              setRspSelect(null);
+              // FIXME 게임상황에 따라 변경가능하게 기획해야됨
+              setSelectConfirm(false);
+            }}
+            src={rspIconMap[player.rsp as RockScissorsPaper] ?? RandomRSP}
+            alt=""
+          />
+        </motion.aside>
+      )}
       <aside
-        className={`fixed right-8 top-40 z-30 group text-white flex flex-row-reverse gap-4`}
-        onClick={() => setOpensHelp(!opensHelp)}
+        className={`fixed right-8 top-40 z-40 group text-white flex flex-row-reverse gap-4`}
+        onMouseEnter={() => setOpensHelp(true)}
+        onMouseLeave={() => setOpensHelp(false)}
       >
         <FcInfo className="w-10 h-10" />
         <section className="absolute w-[50vw] z-40 bg-main-contra text-main bg-opacity-90 hidden group-hover:grid grid-cols-2 border border-white p-4 rounded-md">
@@ -573,7 +597,7 @@ const RockScissorsPaperGame = () => {
                 alt=""
               />
               <img
-                className="flex justify-center items-center"
+                className={`relative flex justify-center items-center`}
                 onClick={() => {
                   // 모달창 오픈
                   setSelectOpen(true);

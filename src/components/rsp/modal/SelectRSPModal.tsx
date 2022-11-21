@@ -16,8 +16,6 @@ interface SelectRSPModalProps {
   setSelectOpen: (selectOpens: boolean) => void;
   // 선택확인
   setSelectConfirm: (selectConfirmed: boolean) => void;
-  // 승자결정
-  decideWinners: () => RSPGamePlayer[];
 }
 
 const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
@@ -27,7 +25,6 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
     isSelectOpen,
     setSelectOpen,
     setSelectConfirm,
-    decideWinners,
   } = props;
 
   const [selectTimeOver, setSelectTimeOver] = useState<number>(5);
@@ -61,7 +58,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
 
   return (
     <motion.div
-      className="fixed z-30 top-0 left-0 right-0 bottom-0 flex items-center justify-center"
+      className="fixed z-[38] top-0 left-0 right-0 bottom-0 flex items-center justify-center"
       initial={{ opacity: 0.4 }}
       animate={{ opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.3 }}

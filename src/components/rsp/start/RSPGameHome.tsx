@@ -6,7 +6,7 @@ const RSPGameHome = () => {
   const [isStart, setStart] = useState<boolean>(false);
 
   return (
-    <div className="w-full h-[85vh] bg-main-contra">
+    <div className="w-full h-screen bg-main-contra flex flex-col items-center">
       {!isStart ? (
         <RSPGameStartPage setStart={setStart} />
       ) : (

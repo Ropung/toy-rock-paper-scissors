@@ -30,7 +30,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
     decideWinners,
   } = props;
 
-  const [selectTimeOver, setSelectTimeOver] = useState<number>(3);
+  const [selectTimeOver, setSelectTimeOver] = useState<number>(5);
 
   // FIXME 모델로 분류
   const randomRPSMap: { [key in number]: RockScissorsPaper } = {
@@ -61,7 +61,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
 
   return (
     <motion.div
-      className="fixed z-20 top-0 left-0 right-0 bottom-0 flex items-center justify-center"
+      className="fixed z-30 top-0 left-0 right-0 bottom-0 flex items-center justify-center"
       initial={{ opacity: 0.4 }}
       animate={{ opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.3 }}

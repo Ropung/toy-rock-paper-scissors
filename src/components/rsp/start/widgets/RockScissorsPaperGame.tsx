@@ -14,7 +14,8 @@ import RockScissorsPaper from "@models/rsp/RockScissorsPaper";
 
 import SelectRSPModal from "../../modal/SelectRSPModal";
 
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
+import { FcInfo } from "react-icons/fc";
 import { motion } from "framer-motion";
 import RSPPianoMap from "@components/rsp/map/RSPPianoMap";
 import PlayerPiece from "@components/rsp/piece/PlayerPiece";
@@ -36,6 +37,8 @@ const RockScissorsPaperGame = () => {
     SCISSORS: Scissors,
     PAPER: Paper,
   };
+
+  const [opensHelp, setOpensHelp] = useState<boolean>(false);
 
   // 함수로 만듦으로써 매번 생성하기 떄문에 다른 참조값을 가지게 됨.
   // rsp, match 등 참조되는 자료(이 경우 배열)가 없었으면
@@ -468,6 +471,42 @@ const RockScissorsPaperGame = () => {
           decideWinners={decideWinners}
         />
       )}
+      <aside
+        className={`fixed right-8 top-40 z-30 group text-white flex flex-row-reverse gap-4`}
+        onClick={() => setOpensHelp(!opensHelp)}
+      >
+        <FcInfo className="w-10 h-10" />
+        <section className="absolute w-[50vw] z-40 bg-main-contra text-main bg-opacity-90 hidden group-hover:grid grid-cols-2 border border-white p-4 rounded-md">
+          <article className="h-full">
+            <h1 className="font-bold text-2xl">게임 방법</h1>
+            <ol className="flex-auto flex flex-col justify-center gap-2 py-2">
+              <li>
+                1. 가위바위보 버튼(
+                <img className="inline-block w-[2vw]" src={RandomRSP} alt="" />
+                )을 누릅니다.
+              </li>
+              <li>
+                2. 승리 시 묵은 한 칸, 찌는 두 칸, 빠는 다섯 칸 이동합니다.
+              </li>
+              <li>3. 마지막 건반에 도달해 보세요.</li>
+            </ol>
+          </article>
+          <article className="flex flex-col border border-white p-4 rounded-md">
+            <h1 className="font-bold">검은 건반 특수 규칙</h1>
+            <ul className="flex-auto flex flex-col justify-center">
+              <li>- 검은 건반에는 최대 두 명만 놓일 수 있습니다.</li>
+              <li>
+                - 빈 검은 건반에 세 명 이상이 올라가려 하면 그 전 흰 건반에
+                놓이게 됩니다.
+              </li>
+              <li>
+                - 검은 건반에 이미 한 명 이상이 올라가 있을 때 정원을 초과하려
+                하면 '말 뛰어넘기'를 시전하여 그 다음 흰 건반에 놓이게 됩니다.
+              </li>
+            </ul>
+          </article>
+        </section>
+      </aside>
       {/* 게임 화면표현 */}
       <RSPPianoMap>
         {(() => {
@@ -503,7 +542,7 @@ const RockScissorsPaperGame = () => {
 
       {/* 플레이어들의 바텀창 */}
       <motion.div
-        className="fixed right-0 left-0 bottom-0 min-w-full min-h-fit flex flex-col gap-2 border-t border-black bg-black bg-opacity-10 z-0"
+        className="fixed right-0 left-0 bottom-0 min-w-full min-h-fit flex flex-col gap-2 border-t border-black bg-black bg-opacity-10 z-20"
         animate={isModalMove ? "open" : "closed"}
         variants={{
           open: { y: "80%" },

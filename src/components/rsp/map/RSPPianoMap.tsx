@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useRef } from "react";
-
+import RandomRSP from "@assets/img/rsp/random_rsp.png";
 export interface RSPPianoMapProps {
   children: React.ReactNode;
 }

@@ -614,9 +614,9 @@ const RockScissorsPaperGame = () => {
               {player.name}
             </p>
             <div className="w-full flex flex-row justify-center gap-2">
-              <img className="w-1/3" src={Rock} alt="" />
-              <img className="w-1/3" src={Rock} alt="" />
-              <img className="w-1/3" src={Rock} alt="" />
+              <img className="w-1/3 opacity-60" src={Rock} alt="" />
+              <img className="w-1/3 opacity-60" src={Scissors} alt="" />
+              <img className="w-1/3 opacity-60" src={Paper} alt="" />
             </div>
           </li>
 
@@ -644,9 +644,9 @@ const RockScissorsPaperGame = () => {
                 {counter.name}
               </p>
               <div className="w-full flex flex-row gap-2 justify-between items-center">
-                <img className="w-1/3" src={Rock} alt="" />
-                <img className="w-1/3" src={Rock} alt="" />
-                <img className="w-1/3" src={Rock} alt="" />
+                <img className="w-1/3 opacity-60" src={Rock} alt="" />
+                <img className="w-1/3 opacity-60" src={Scissors} alt="" />
+                <img className="w-1/3 opacity-60" src={Paper} alt="" />
               </div>
             </li>
           ))}

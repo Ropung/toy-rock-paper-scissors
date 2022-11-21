@@ -5,7 +5,7 @@ const GNB = () => {
   const { HOME, RSP } = Path;
 
   return (
-    <nav className="fixed top-0 right-0 left-0 w-screen flex flex-row h-32 bg-light text-dark select-none px-8 pt-8 pb-8 border-b shadow-md">
+    <nav className="fixed top-0 right-0 left-0 z-[100] w-screen flex flex-row h-32 bg-light text-dark select-none px-8 pt-8 pb-8 border-b shadow-md">
       <header className="w-full flex justify-between items-center text-5xl font-bold tracking-wider">
         Ropung
       </header>

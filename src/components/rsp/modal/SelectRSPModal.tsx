@@ -1,37 +1,43 @@
 import { motion } from "framer-motion";
 import MainButton from "@styles/button";
-import {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { FunctionComponent, useLayoutEffect, useState } from "react";
 import Rock from "@assets/img/rsp/Rock.png";
 import Scissors from "@assets/img/rsp/scissors.png";
 import Paper from "@assets/img/rsp/paper.png";
 import RockScissorsPaper from "@models/rsp/RockScissorsPaper";
+import RSPGamePlayer from "@models/rsp/RSPGamePlayer";
 
-export interface SelectRSPModalProps {
+interface SelectRSPModalProps {
   // 가위바위보 상태
   rspSelect: RockScissorsPaper | null;
-  setRspSelect: React.Dispatch<React.SetStateAction<RockScissorsPaper | null>>;
+  setRspSelect: (rsp: RockScissorsPaper | null) => void;
   // 상태창 닫기
   isSelectOpen: boolean;
-  setSelectOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectOpen: (selectOpens: boolean) => void;
+  // 선택확인
+  setSelectConfirm: (selectConfirmed: boolean) => void;
 }
 
 const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
-  const { rspSelect, setRspSelect, isSelectOpen, setSelectOpen } = props;
+  const {
+    rspSelect,
+    setRspSelect,
+    isSelectOpen,
+    setSelectOpen,
+    setSelectConfirm,
+  } = props;
 
   const [selectTimeOver, setSelectTimeOver] = useState<number>(5);
 
+  // FIXME 모델로 분류
   const randomRPSMap: { [key in number]: RockScissorsPaper } = {
     0: "ROCK",
     1: "SCISSORS",
     2: "PAPER",
   };
+
+  const rpsModalStyle =
+    "after:absolute after:bottom-0 after:z-10 after:w-6 after:h-6 after:left-[11.5%] after:translate-y-1/2 after:rotate-45 after:border-b after:border-r after:border-black after:bg-main";
 
   useLayoutEffect(() => {
     if (selectTimeOver <= 0) {
@@ -41,6 +47,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
       rspSelect == null && setRspSelect(randomRPS);
 
       setSelectOpen(false);
+      setSelectConfirm(true);
       return;
     }
     const timeout = setTimeout(() => {
@@ -51,18 +58,21 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
 
   return (
     <motion.div
-      className="fixed z-0 top-0 left-0 right-0 bottom-0 flex items-center justify-center"
-      initial={{ opacity: 0.5 }}
+      className="fixed z-[38] top-0 left-0 right-0 bottom-0 flex items-center justify-center"
+      initial={{ opacity: 0.4 }}
       animate={{ opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.3 }}
     >
       <aside
         className="fixed z-10 w-full h-full bg-black bg-opacity-20"
-        onClick={() => {
-          setSelectOpen(false);
-        }}
+        //FIXME 테스트용 실제 서비스시 삭제
+        // onClick={() => {
+        //   setSelectOpen(false);
+        // }}
       ></aside>
-      <aside className="fixed z-20 m-4 top-1/2 -translate-y-2/3 min-w-[70vw] min-h-[40vh] flex flex-col gap-4 justify-center  bg-main text-main-contra border-2 border-black rounded px-4 py-4 after:absolute after:bottom-0 after:z-10 after:w-8 after:h-8 after:left-1/2 after:translate-y-1/2 after:-translate-x-1/2 after:rotate-45 after:border-b-2 after:border-r-2 after:border-black  after:bg-main">
+      <aside
+        className={`fixed z-20 w-[90%] h-fit flex flex-col gap-4 justify-center items-center bg-main text-main-contra border-2 border-black rounded px-6 py-8 ${rpsModalStyle}`}
+      >
         <div className="w-full flex flex-col items-start text-2xl px-4">
           <p className="text-3xl">
             가위바위보를 선택해주세요! ({selectTimeOver ?? 30}초)
@@ -105,24 +115,33 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
             alt=""
           />
         </div>
-        <MainButton
-          className="w-full border-2 border-black text-2xl font-bold !bg-main-contra text-main z-30"
-          onClick={() => {
-            if (rspSelect) {
-              setRspSelect(rspSelect);
+        <div className="w-full flex flex-col gap-2">
+          <MainButton
+            className="w-full border-2 border-black text-2xl font-bold !bg-main-contra text-main z-30"
+            onClick={() => {
+              // 기획상 승부에서 찌가 많이나올수록 게임이 흥미로워짐
+              const random = Math.round(Math.random() * 2);
+              const randomRPS = randomRPSMap[random];
+              setRspSelect(randomRPS);
               setSelectOpen(false);
-              return;
-            }
-            // 기획상 승부에서 찌가 많이나올수록 게임이 흥미로워짐
-            const random = Math.round(Math.random() * 2);
-            const randomRPS = randomRPSMap[random];
-            setRspSelect(randomRPS);
-
-            setSelectOpen(false);
-          }}
-        >
-          선택하기
-        </MainButton>
+              setSelectConfirm(true);
+            }}
+          >
+            무작위 선택
+          </MainButton>
+          <MainButton
+            className={`w-full border-2 border-black text-2xl font-bold !bg-main-contra text-main z-30 ${
+              rspSelect == null ? `!bg-opacity-70` : ``
+            }`}
+            disabled={!rspSelect}
+            onClick={() => {
+              setSelectOpen(false);
+              setSelectConfirm(true);
+            }}
+          >
+            선택하기
+          </MainButton>
+        </div>
       </aside>
     </motion.div>
   );

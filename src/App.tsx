@@ -4,7 +4,7 @@ import Path from "./utils/routes/Path";
 // 컴포넌트
 import HomePage from "./components/home/HomePage";
 import GNB from "./components/common/nav/GNB";
-import RSPGameHome from "@components/rsp/RSPGameHome";
+import RSPGameHome from "@components/rsp/start/RSPGameHome";
 
 function App() {
   const location = useLocation();
@@ -23,7 +23,7 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <div>
+    <div className="pt-32">
       {hasNav && <GNB />}
       <Routes>
         <Route path={HOME} element={<HomePage />} />

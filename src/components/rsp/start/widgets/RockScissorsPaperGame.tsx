@@ -314,7 +314,6 @@ const RockScissorsPaperGame = () => {
         // unexpected
         return;
       }
-
       // 반복문을 썼지만 가독성이 떨어져 반복문 사용안함
       const randoms = [0, 0, 0];
       randoms[0] = Math.floor(Math.random() * 2 + 1);
@@ -343,7 +342,6 @@ const RockScissorsPaperGame = () => {
 
       setCounters(newCounters);
     }, 200);
-
     setRandomRSPAnimateInterval(interval);
 
     return () => clearInterval(interval);
@@ -486,7 +484,6 @@ const RockScissorsPaperGame = () => {
               setSelectOpen(true);
               // 가위바위보 상태 초기화
               setRspSelect(null);
-              // FIXME 게임상황에 따라 변경가능하게 기획해야됨
               setSelectConfirm(false);
             }}
             src={rspIconMap[player.rsp as RockScissorsPaper] ?? RandomRSP}

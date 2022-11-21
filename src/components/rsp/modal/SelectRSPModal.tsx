@@ -27,7 +27,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
     setSelectConfirm,
   } = props;
 
-  const [selectTimeOver, setSelectTimeOver] = useState<number>(5);
+  const [selectTimeOver, setSelectTimeOver] = useState<number>(10);
 
   // FIXME 모델로 분류
   const randomRPSMap: { [key in number]: RockScissorsPaper } = {
@@ -78,7 +78,7 @@ const SelectRSPModal: FunctionComponent<SelectRSPModalProps> = (props) => {
             가위바위보를 선택해주세요! ({selectTimeOver ?? 30}초)
           </p>
           <span className="text-lg">
-            (시간이 초과되면 자동으로 선택됩니다.)
+            (시간이 초과되거나 선택하지않으면 자동으로 선택됩니다.)
           </span>
         </div>
         <div className="w-full flex gap-4 justify-center">

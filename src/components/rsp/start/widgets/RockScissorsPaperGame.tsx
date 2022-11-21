@@ -475,9 +475,9 @@ const RockScissorsPaperGame = () => {
       )}
       {opensHelp && (
         <motion.aside
-          className="fixed bg-main border-4 p-2 border-main-contra left-[12vw] w-[12vw] bottom-[13vw] h-[12vw] rounded-full z-[35]"
+          className="fixed bg-main border-4 p-2 border-main-contra left-[12.2vw] w-[12vw] bottom-[12vw] h-[12vw] rounded-full z-[35]"
           initial={{ scale: 0.95 }}
-          animate={{ scale: 1.0 }}
+          animate={{ scale: 1.15 }}
         >
           <img
             className={`relative flex justify-center items-center`}

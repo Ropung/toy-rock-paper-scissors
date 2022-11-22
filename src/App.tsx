@@ -5,10 +5,11 @@ import Path from "./utils/routes/Path";
 import HomePage from "./components/home/HomePage";
 import GNB from "./components/common/nav/GNB";
 import RSPGameHome from "@components/rsp/start/RSPGameHome";
+import TicTacToePage from "@components/tic-tac-toe/TicTacToePage";
 
 function App() {
   const location = useLocation();
-  const { HOME, RSP } = Path;
+  const { HOME, RSP, TTT } = Path;
 
   const [hasNav, setHasNav] = useState<boolean>(false);
 
@@ -28,6 +29,8 @@ function App() {
       <Routes>
         <Route path={HOME} element={<HomePage />} />
         <Route path={RSP} element={<RSPGameHome />} />
+        <Route path={TTT} element={<TicTacToePage />} />
+        {/* TODO redirect to HOME on wrong path */}
       </Routes>
     </div>
   );

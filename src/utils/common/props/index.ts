@@ -17,8 +17,8 @@ export type CommonButtonProps = React.DetailedHTMLProps<
   HTMLButtonElement
 >;
 
-type InitProps = Props<HTMLElement>;
-
 export type CommonSVGProps = React.SVGProps<SVGSVGElement>;
+
+type InitProps = Props<HTMLElement>;
 
 export default InitProps;

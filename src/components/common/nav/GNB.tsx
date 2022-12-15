@@ -14,7 +14,7 @@ const GNB = () => {
           <Link to={HOME}>홈</Link>
         </li>
         <li>
-          <Link to={RSP}>가위바위보</Link>
+          <Link to={RSP}>프로젝트</Link>
         </li>
         <li>
           <Link to={HOME}>UI</Link>

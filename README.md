@@ -11,4 +11,5 @@
 <img width="878" alt="스크린샷 2023-07-10 오후 3 49 45" src="https://github.com/Ropung/toy-rock-paper-scissors/assets/85475762/db43be05-f77b-4f37-a3e3-915911222fec">
 
 <br />
-## 마지막 건반에 먼저 도착하는 유저가 이기는 게임입니다.(미구현)
+
+### 마지막 건반에 먼저 도착하는 유저가 이기는 게임입니다.(미구현)

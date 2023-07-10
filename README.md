@@ -23,7 +23,7 @@
 # [게임 진행 화면]
 
 <br />
-<img width="873" alt="스크린샷 2023-07-10 오후 3 59 41" src="https://github.com/Ropung/toy-rock-paper-scissors/assets/85475762/b1a2a005-0877-434b-8284-7d8e074ae44d">
+![게임 진행 gif](https://github.com/Ropung/toy-rock-paper-scissors/assets/85475762/5a2f5104-49df-4cb9-915f-985d66a897ea)
 <br />
 
 ### 가위바위보에서 승리시 피아노 건반을 흰 -> 백 순으로 차례대로 올라가는 게임입니다.

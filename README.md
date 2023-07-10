@@ -22,10 +22,6 @@
 
 # [게임 진행 화면]
 
-<br />
-![게임 진행 gif](https://github.com/Ropung/toy-rock-paper-scissors/assets/85475762/5a2f5104-49df-4cb9-915f-985d66a897ea)
-<br />
-
 ### 가위바위보에서 승리시 피아노 건반을 흰 -> 백 순으로 차례대로 올라가는 게임입니다.
 
 <br />
@@ -33,4 +29,8 @@
 <br />
 
 ### 마지막 건반에 먼저 도착하는 유저(프로도)가 이기는 게임입니다.
+
+<br />
+![게임 진행 gif](https://github.com/Ropung/toy-rock-paper-scissors/assets/85475762/5a2f5104-49df-4cb9-915f-985d66a897ea)
+<br />
 - 시간 관계상 마지막 건반에 도착했을때 이벤트를 아직 구현하지 못했습니다.
